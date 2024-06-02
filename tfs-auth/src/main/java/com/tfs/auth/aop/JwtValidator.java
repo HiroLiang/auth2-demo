@@ -1,8 +1,7 @@
-package com.tfs.aop;
+package com.tfs.auth.aop;
 
-import com.tfs.util.JwtUtil;
+import com.tfs.auth.util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +21,14 @@ public class JwtValidator {
 
     private final JwtUtil jwtUtil;
 
-    @Pointcut("@annotation(com.tfs.util.JwtValidation)")
+    @Pointcut("@annotation(com.tfs.auth.model.annotation.JwtValidation)")
     public void jwtPointcut() {}
 
     @Before("jwtPointcut()")
     public void validateJwt(JoinPoint joinPoint) {
         log.info("Jwt validation joint point : {}", joinPoint.getSignature().getName());
 
-        String header = request.getHeader("Authorization");
+        String header = request.getHeader("JwtToken");
         if (header == null || !header.startsWith("Bearer "))
             throw new RuntimeException("Missing or invalid Authorization header");
 

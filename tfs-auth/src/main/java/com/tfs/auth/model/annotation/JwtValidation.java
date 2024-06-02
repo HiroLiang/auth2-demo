@@ -1,4 +1,4 @@
-package com.tfs.util;
+package com.tfs.auth.model.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

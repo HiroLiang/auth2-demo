@@ -1,4 +1,4 @@
-package com.tfs.util;
+package com.tfs.auth.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -38,13 +38,11 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> jws = decodeToken(token);
-
+            decodeToken(token);
+            return true;
         } catch (Exception e) {
             return false;
         }
-
-        return true;
     }
 
     public Jws<Claims> decodeToken(String token) {

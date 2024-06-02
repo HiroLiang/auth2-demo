@@ -1,4 +1,4 @@
-package com.tfs.util;
+package com.tfs.auth.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
