@@ -13,7 +13,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().permitAll())
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
                 .headers(headers -> headers
@@ -23,6 +22,6 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/resources/**", "/static/**");
+        return (web) -> web.ignoring().requestMatchers("/resources/**", "/static/**", "/assets/**");
     }
 }

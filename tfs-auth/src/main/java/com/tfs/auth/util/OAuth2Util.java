@@ -28,6 +28,10 @@ public class OAuth2Util {
 
     private final RestUtil restUtil;
 
+    /*
+     * 注入檔案路徑，從檔案取得 OAuth secret 權證
+     * 若有新的在路徑後面用","分隔，並到這裡新增判斷權證檔名
+     */
     @Autowired
     public OAuth2Util(@Value("${oauth2.config.paths}") String configPaths, RestUtil restUtil) {
         this.restUtil = restUtil;
@@ -36,7 +40,7 @@ public class OAuth2Util {
 
         // 遍歷 path ，若有新增要來這邊註冊新的對象
         for (String path : paths) {
-            File file = FileUtil.getResourcesFile(path);
+            File file = new File(path);
             String json = FileUtil.readAsString(file);
 
             // google oauth2
@@ -49,6 +53,7 @@ public class OAuth2Util {
         log.info("Initialed secrets : {}", clientSecrets);
     }
 
+    // 從 Map 取得 Google 認證頁面 URL
     public String startGoogleOauth2() {
         GoogleClientSecret clientSecret = (GoogleClientSecret) clientSecrets.get("google");
         String uuid = UUID.randomUUID().toString();
@@ -62,6 +67,7 @@ public class OAuth2Util {
         return builder.build().toUriString();
     }
 
+    // 用轉導的 code 向 Google api 取得 Token
     public GoogleOauthToken getGoogleAuthToken(String code) {
         GoogleClientSecret clientSecret = (GoogleClientSecret) clientSecrets.get("google");
 
@@ -80,6 +86,7 @@ public class OAuth2Util {
         return restUtil.post(clientSecret.getTokenUri(), entity, GoogleOauthToken.class);
     }
 
+    // 拿 Token 中 ID Token 向 Google 認證解碼 UserInfo ( 這裡只提 email scope )
     public GoogleUserData getGoogleUserInfo(String idToken) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://oauth2.googleapis.com/tokeninfo")
                 .queryParam("id_token", idToken);
