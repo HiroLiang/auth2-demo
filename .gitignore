@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### static web doc ###
+**/resources/static/*
